@@ -1,0 +1,4 @@
+/* sm :屏幕宽度768px; 当屏幕小于768px的时候 隐藏 id=content-right 的组件*/
+@media  (max-width: 768px) {
+    #content-right {display: none;}
+}

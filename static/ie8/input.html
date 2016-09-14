@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>具有基本布局的模板文件</title>
+
+  <!-- Bootstrap -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  <!--使用媒体查询的css必须放到css文件中引用才可以生效不知道为什么-->
+  <link href="../css/css.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="../js/html5shiv.min.js"></script>
+  <script src="../js/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+<div class="container">
+  <h1>基本布局模板</h1>
+  <nav class="navbar navbar-inverse">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Page One</a></li>
+        <li><a href="#">Page Two</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="content" class="row-fluid">
+    <div class="col-md-9 col-sm-9">
+      <h2>Main Content Section</h2>
+      <p>
+        input datetime:
+      </p>
+    </div>
+    <div id="content-right" class="col-md-3 col-sm-3 ">
+      <h2>Sidebar</h2>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href='#'>Another Link 1</a></li>
+        <li><a href='#'>Another Link 2</a></li>
+        <li><a href='#'>Another Link 3</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

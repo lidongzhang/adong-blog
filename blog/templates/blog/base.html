@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>{% block title %}base模板block title{% endblock %}</title>
+
+  <!-- Bootstrap -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!--使用媒体查询的css必须放到css文件中引用才可以生效不知道为什么-->
+  <link href="{% static 'css/css.css' %}" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="{% static 'js/html5shiv.min.js' %}"></script>
+  <script src="{% static 'js/respond.min.js' %}"></script>
+  <![endif]-->
+
+</head>
+<body>
+<div class="container">
+
+    {% include 'blog/main_nav.html'  %}
+
+    <div id="content" class="row-fluid">
+        <div class="col-md-9 col-sm-9">
+            {% block content %}
+             <div>base 模板 block content</div>
+            {% endblock%}
+        </div>
+        <div id="content-right" class="col-md-3 col-sm-3 ">
+            {% include 'blog/right_nav.html' %}
+        </div>
+        <div id="bottom" class="col-md-12 col-sm-12">
+            {% include 'blog/bottom.html'  %}
+        </div>
+    </div>
+
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>
