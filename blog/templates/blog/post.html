@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+
+{% load custome_tags %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+
+        <h4 class="bg-info  " style="padding:10px;">{{ post.title }}</h4>
+        <p>{{ post.body|markdown_convert }}</p>
+
+
+{% endblock %}
+
+

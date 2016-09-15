@@ -1,6 +1,6 @@
  <h2>标签</h2>
       <ul class="nav nav-tabs nav-stacked">
           {% for tag in tags %}
-             <li><a href='tag/{{ tag.id }}'>{{ tag.name }}</a></li>
+             <li><a href='/blog/tag/{{ tag.id }}'>{{ tag.name }}</a></li>
           {% endfor %}
       </ul>
