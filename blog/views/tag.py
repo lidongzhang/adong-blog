@@ -6,5 +6,5 @@ from blog.models import Tag
 
 def load(request,id):
     t = Tag.objects.get(id=id)
-    p = t.post_set.all()
+    p = t.post_set.all().order_by('-updateDatetime')
     return render( request, 'blog/content.html' ,{ 'posts' : p} ) 
