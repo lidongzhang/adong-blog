@@ -16,7 +16,7 @@ mv  app/settings.py   app/settings.py.1
 cat app/settings.py.1 | sed "s/'PASSWORD': 'sa',/'PASSWORD': '$mysqluserpassword',/g" > app/settings.py
 
 mv  app/settings.py   app/settings.py.1
-cat app/settings.py.1 | sed "s/EMAIL_HOST_PASSWORD = ''/EMAIL_HOST_PASSWORD = '$sendemailpassword'/g"
+cat app/settings.py.1 | sed "s/EMAIL_HOST_PASSWORD = ''/EMAIL_HOST_PASSWORD = '$sendemailpassword'/g" > app/settings.py
 
 rm app/settings.py.1
 
