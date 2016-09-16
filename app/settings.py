@@ -128,3 +128,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+
+#send_email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.rstone.com.cn'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'lidongzhang@rstone.com.cn'
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'lidongzhang@rstone.com.cn'
