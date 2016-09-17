@@ -82,7 +82,11 @@ DATABASES = {
         'HOST': 'localhost',
         'USER': 'sa',
         'PASSWORD': 'sa',
+        'OPTIONS' : {
+            'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
+    
 }
 
 

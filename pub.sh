@@ -1,5 +1,7 @@
 #!/bin/bash
-echo $#
+
+cd $(dirname $0)
+
 if [ ! $# == 3 ]; then
     echo "用法: $0 服务器数据库用户名 密码 发送邮件邮箱密码"
     exit
