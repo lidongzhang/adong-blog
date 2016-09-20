@@ -1,6 +1,6 @@
 from django.contrib import admin
-from blog.models import Post, Tag
-
+from blog.models import Post, Tag, User
+import hashlib
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'updateDatetime', 'createDatetime')  # 列表显示
@@ -13,3 +13,12 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(Post,PostAdmin)
 admin.site.register(Tag)
+class UserAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        hash = hashlib.sha1()
+        hash.update(obj.password.encode('utf-8'))
+        obj.password = hash.hexdigest()
+        obj.save()
+        
+admin.site.register(User,UserAdmin)
+

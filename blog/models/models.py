@@ -24,3 +24,21 @@ class Tag(models.Model):
         verbose_name_plural = u'标签'
     def __str__(self):
         return self.name
+
+
+class User(models.Model):
+    '''存储用户信息'''
+    name = models.CharField('姓名', max_length = 50)
+    nickname_email = models.CharField('用户名',max_length = 200)
+    password = models.CharField('密码', max_length =200)
+    ismember = models.BooleanField('记住用户')
+    createDatetime = models.DateTimeField(u'创建时间',auto_now_add = True)
+    updateDatetime = models.DateTimeField(u'修改时间',auto_now = True)
+    class Meta:
+        app_label = 'blog'
+        verbose_name = '用户'
+        verbose_name_plural = '用户'
+    def __str__(self):
+        return self.name
+
+    
