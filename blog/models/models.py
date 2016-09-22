@@ -25,6 +25,10 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+class Hit(models.Model):
+    '''首页点击数'''
+    count = models.IntegerField()
+    
 
 class User(models.Model):
     '''存储用户信息'''
