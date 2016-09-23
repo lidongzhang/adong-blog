@@ -8,6 +8,7 @@
 {% block content %}
     {% for post in posts %}
         <h4 class="bg-info  " style="padding:10px;"><a href="/blog/post/{{post.id}}" target="_blank">{{ post.title }}</a></h4>
+
         <p>{{ post.body|markdown_convert }}</p>
 
     {% endfor %}

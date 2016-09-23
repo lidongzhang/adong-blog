@@ -7,6 +7,7 @@ class Post(models.Model):
     createDatetime = models.DateTimeField(u'创建时间',auto_now_add = True)
     updateDatetime = models.DateTimeField(u'修改时间',auto_now = True)
     tag = models.ManyToManyField('Tag')
+    count = models.IntegerField(default=0)
     class Meta:
         app_label = 'blog'  #应用的名字，必须添加 ， __init__.py 中 要添加本类的 import
         #db_table = 'blog_post'  # 数据库名

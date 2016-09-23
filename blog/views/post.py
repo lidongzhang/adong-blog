@@ -5,4 +5,6 @@ from blog.models import Post
 
 def load(request,id):
     p = Post.objects.get(id=id)
+    p.count = p.count + 1
+    p.save()
     return render( request, 'blog/post.html' ,{ 'post' : p} ) 
