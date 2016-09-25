@@ -8,23 +8,15 @@
 {% block content %}
 
 
-        <h4 class="bg-info  " style="padding:10px;">{{ post.title }}</h4>
-	<div style="text-align:right;padding-right:20px;" >
- 	  C：{{post.count}}&nbsp;
-	  UT：{{post.updateDatetime}}&nbsp;
-	  CT：{{post.createDatetime}}  &nbsp; </div>
-        <p>{{ post.body|markdown_convert }}</p>
-
-	<hr>
-	<h6 class="bg-info" style="padding:5px;">评论</h6>
+        <h4 class="bg-info  " style="padding:10px;">留言</h4>
 	<div style="padding:10px;">
 	{% for tpc in pc %}
-	<p><strong>{{tpc.userID.name}}</strong></p>
-        <p>{{tpc.content|markdown_convert}}</p>
-        <div style="text-align:right;padding-right:20px;">{{tpc.createDatetime}}</div>
+	  <p><strong>{{tpc.userID.name}}</strong></p>
+          <p>{{tpc.content|markdown_convert}}</p>
+          <div style="text-align:right;padding-right:20px;">{{tpc.createDatetime}}</div>
 	{% endfor  %}
 	</div>
-	<h6 class="bg-info" style="padding:5px;">发评论</h6>
+	<h6 class="bg-info" style="padding:5px;">发留言</h6>
 	<form action="" method="post">
 	{% csrf_token  %}
 	{% if error %}
@@ -48,7 +40,7 @@
 	  (anonymous@rstone.tech 为匿名用户，可以直接使用)<br>
 	{% else %}
 	  <strong>{{name}}</strong>
-	  <a href="/blog/user/logout/{{post.id}}" >退出</a>
+	  <a href="/blog/user/logoutcomment/" >退出</a>
 	{% endif  %}
 	</p>
 	<p>

@@ -1,8 +1,8 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.template import RequestContext
 import hashlib
-import  datetime 
+from  datetime import datetime
 
 from blog.models import Post, User, PostComment
 from blog.views.postCommentForm import PostCommentForm
@@ -17,29 +17,24 @@ def inner_postcomment(tu, content, p, ismember):
     r = {'error' : None, 'name' : None, "cookie" : {'name': None, 'value':None} }
     
     u = None
-    u = tu
-    if tu.inner_state == "nologin":
-        if tu.nickname_email == 'anonymous@rstone.tech' :
-            u = User.objects.get(nickname_email = tu.nickname_email)
-            u.inner_state = "login"
+    
+    if tu.nick == 'anonymous@rstone.tech' :
+        u = User.objects.get(nickname_email = tu.nick)
+    else:
+        us = User.objects.filter(nickname_email = tu.nick, password = inner_gethash(tu.password))
+        if us.count() == 0 :
+            r["error"] = "用户名或密码错误！"
         else:
-            us = User.objects.filter(nickname_email = tu.nickname_email, password = inner_gethash(tu.password))
-            if us.count() == 0 :
-                r["error"] = "用户名或密码错误！"
-            else:
-                r["name"] = us[0].name
-                u = us[0]
-                u.inner_state = "login"
-
-    if u.inner_state == "login"  :
+            r["name"] = us[0].name
+            u = us[0]
+    if u :
         t = PostComment()
         t.postID = p
         t.userID = u
         t.content = content
         t.save()
         
-        if  tu.nickname_email != 'anonymous@rstone.tech' :
-            r["name"] = u.name
+        if  tu.nick != 'anonymous@rstone.tech' :
             r["cookie"]["name"] = "cookie_userid"
             r["cookie"]["value"] = u.id
             r["cookie"]["time"] = None
@@ -49,21 +44,6 @@ def inner_postcomment(tu, content, p, ismember):
                 r["cookie"]["time"] =  tm
     return r
 
-def inner_cookie(u, request) :
-    '''cookie处理'''
-    cookie_userid = None
-    if "cookie_userid" in  request.COOKIES:
-        cookie_userid = request.COOKIES["cookie_userid"]
-
-    if cookie_userid :
-        tus = User.objects.filter(id = cookie_userid)
-        if tus.count() > 0 :
-            u = tus[0]
-            u.inner_state = "login"
-    return u
-
-def inner_print(info, value):
-    print(info + ":" , value)
 
 def load(request,id):
     #post
@@ -71,41 +51,45 @@ def load(request,id):
     p.count = p.count + 1
     p.save()
 
+    #cookie
+    cookie_userid = None
+    if "cookie_userid" in  request.COOKIES:
+        cookie_userid = request.COOKIES["cookie_userid"]
+        
     name = None
     u = User()
-    u.inner_state ="nologin"   #'''nologin login'''
-    u = inner_cookie(u, request)
-    if u.inner_state == "login" :
-        name = u.name
-    inner_print("inner_state", u.inner_state)
+    u.ischeck = False #是否身份验证
+    if cookie_userid :
+        tus = User.objects.filter(id = cookie_userid)
+        if tus.count() > 0 :
+            u = tus[0]
+            u.nick = u.nickname_email
+            
+            name = u.name
+            u.ischeck = True
+
     error = None
     r = None
     if request.method == 'POST':
         form = PostCommentForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-
-            if u.inner_state == "nologin" :
-                u.nickname_email = cd['userNickname_email']
+            print(u.nick)
+            if u.ischeck == False :
+                u.nick = cd['userNickname_email']
                 
                 u.password = cd['userPassword']
                 u.passowrd = u.password.strip()
-                if u.nickname_email == "" :
-                    error = '必须输入用户名！'
-                
-                if u.nickname_email != 'anonymous@rstone.tech':
+                if u.nick != 'anonymous@rstone.tech':
                     if u.password == "":
                         error = "必须输入密码！"
                     elif len(u.password) < 6 :
                         error = "必须输入6位以上密码！"
             '''业务处理'''
             r = inner_postcomment(u, cd['content'], p, cd['ismember'])
-            
+            print("-----")
             if r["error"] :
                 error = r["error"]
-            else:
-                cd['content'] = ''
-                form = PostCommentForm(cd)
             name = r["name"]
 
     else:
@@ -113,8 +97,7 @@ def load(request,id):
         data = {'userNickname_email' : 'anonymous@rstone.tech'  ,
                 'ismember' : True   }
         form = PostCommentForm(data)
-
-    #提取本post的 留言
+        
     pc = PostComment.objects.filter(postID = p)
     
     response = render( request, 'blog/post.html' ,{ 'post' : p, 'form' : form, 'error' : error, 'name' : name, 'pc' : pc} )
@@ -122,7 +105,6 @@ def load(request,id):
 
 
     if r :
-        inner_print("r", r)
         if  r["cookie"]["name"] :
             response.set_cookie(r["cookie"]["name"], r["cookie"]["value"])
             if r["cookie"]["time"] :
@@ -130,13 +112,3 @@ def load(request,id):
     #response.delete_cookie('cookie_userid')
     return response
 
-
-def logout(request, pid):
-    response = HttpResponseRedirect("/blog/post/" + pid)
-    response.delete_cookie('cookie_userid')
-    return response
-
-def logoutcomment(equest):
-    response = HttpResponseRedirect("/blog/comment/")
-    response.delete_cookie("cookie_userid")
-    return response

@@ -4,7 +4,7 @@ from django.template import RequestContext
 import hashlib
 import  datetime 
 
-from blog.models import Post, User, PostComment
+from blog.models import Post, User, Comment
 from blog.views.postCommentForm import PostCommentForm
 
 def inner_gethash(text):
@@ -12,7 +12,7 @@ def inner_gethash(text):
     hash.update(text.encode('utf-8'))
     return hash.hexdigest()
 
-def inner_postcomment(tu, content, p, ismember):
+def inner_postcomment(tu, content, ismember):
     '''postcomment 业务处理'''
     r = {'error' : None, 'name' : None, "cookie" : {'name': None, 'value':None} }
     
@@ -32,8 +32,7 @@ def inner_postcomment(tu, content, p, ismember):
                 u.inner_state = "login"
 
     if u.inner_state == "login"  :
-        t = PostComment()
-        t.postID = p
+        t = Comment()
         t.userID = u
         t.content = content
         t.save()
@@ -65,11 +64,7 @@ def inner_cookie(u, request) :
 def inner_print(info, value):
     print(info + ":" , value)
 
-def load(request,id):
-    #post
-    p = Post.objects.get(id=id)
-    p.count = p.count + 1
-    p.save()
+def load(request):
 
     name = None
     u = User()
@@ -99,7 +94,7 @@ def load(request,id):
                     elif len(u.password) < 6 :
                         error = "必须输入6位以上密码！"
             '''业务处理'''
-            r = inner_postcomment(u, cd['content'], p, cd['ismember'])
+            r = inner_postcomment(u, cd['content'], cd['ismember'])
             
             if r["error"] :
                 error = r["error"]
@@ -115,9 +110,9 @@ def load(request,id):
         form = PostCommentForm(data)
 
     #提取本post的 留言
-    pc = PostComment.objects.filter(postID = p)
+    pc = Comment.objects.filter().order_by('-createDatetime')
     
-    response = render( request, 'blog/post.html' ,{ 'post' : p, 'form' : form, 'error' : error, 'name' : name, 'pc' : pc} )
+    response = render( request, 'blog/commentPost.html' ,{ 'form' : form, 'error' : error, 'name' : name, 'pc' : pc} )
 
 
 
@@ -130,13 +125,3 @@ def load(request,id):
     #response.delete_cookie('cookie_userid')
     return response
 
-
-def logout(request, pid):
-    response = HttpResponseRedirect("/blog/post/" + pid)
-    response.delete_cookie('cookie_userid')
-    return response
-
-def logoutcomment(equest):
-    response = HttpResponseRedirect("/blog/comment/")
-    response.delete_cookie("cookie_userid")
-    return response
